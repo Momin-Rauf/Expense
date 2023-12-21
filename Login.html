@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./Login.js"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .main {
+            width: 100%;
+            height: 100vh;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            margin: 0px;
+            justify-content: start;
+            align-items: center;
+        }
+
+        form {
+            width: 70%;
+            margin-left: 5%;
+            background-color: rgb(154, 153, 156, 0.5);
+            height: 50%;
+            width: 30%;
+            border-radius: 5%;
+            padding: 20px;
+            gap: 10px;
+            display: flex;
+            font-size: larger;
+            font-weight: bold;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 1px 1px 10px 1px black;
+        }
+
+        form:hover {
+            box-shadow: 0px 0px 0px 0px white;
+            transform: scale(0.98);
+        }
+
+        label,
+        input {
+            margin: 10px;
+            border: 0px white;
+            outline: none;
+            padding: 4px;
+            border-radius: 5px;
+        }
+
+        #l2 {
+            margin-left: -17px;
+        }
+
+        button {
+            background: brown;
+            padding: 10px;
+            margin: 5px;
+            color: white;
+            width: 40%;
+            border-radius: 20px;
+            border: 0px white;
+        }
+
+        button:hover {
+            background: white;
+            color: brown;
+            transform: scale(1.04);
+            font-weight: bold;
+        }
+
+        h1 {
+            position: relative;
+            bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main" style="background: url(./Signup.jpg) no-repeat center fixed; background-size: 100%;">
+        <form method="GET" onsubmit="login(event)" class="w-[50%] h-[50%] flex flex-col justify-content items-align">
+            <h1>Login</h1>
+            <div>
+                <label for="email">Email:</label>
+                <input id="email" name="email" type="email">
+            </div>
+            <div>
+                <label id="l2" for="password">Password</label>
+                <input id="password" name="password" type="password">
+            </div>
+            <button class="w-[50%] h-[50%] bg-">Submit</button>
+            <a href="./Signup.html">Create a new Account</a>
+        </form>
+    </div>
+
+    <script>
+        function login(event) {
+            event.preventDefault();
+            // Get the user credentials from the form
+            const loginEmail = document.getElementById('email').value;
+            const loginPassword = document.getElementById('password').value;
+
+            // Get all users from local storage
+            const allUsers = JSON.parse(localStorage.getItem('allUsers')) || [];
+
+            // Flag to check if login is successful
+            let loginSuccessful = false;
+
+            // Loop over all items in local storage
+            for (const user of allUsers) {
+                // Check if the provided email matches any email in local storage
+                if (user.email === loginEmail) {
+                    // Hash the provided password for comparison
+                    const hashedLoginPassword = hashPassword(loginPassword);
+
+                    // Check if the hashed password matches the stored hashed password
+                    if (hashedLoginPassword === user.password) {
+                        loginSuccessful = true;
+                        alert('Login successful! Redirecting to index.html.');
+                        console.log('logged in')
+                        // Redirect to index.html
+                        window.location.href = 'index.html';
+
+                        break; // Break the loop since login is successful
+                    }
+                }
+            }
+
+            // If login is not successful, show an alert
+            if (!loginSuccessful) {
+                alert('Invalid credentials. Please try again.');
+            }
+
+            // Prevent the form from submitting and refreshing the page
+            return false;
+        }
+
+        // Example function for hashing the password (you should use a stronger hashing method in a real-world application)
+        function hashPassword(password) {
+            // This is a simple example and should not be used in production
+            return btoa(password);
+        }
+    </script>
+</body>
+
+</html>
